@@ -107,12 +107,13 @@ export default {
       const categories = await client.getEntries({
         content_type: 'category',
         order: 'sys.createdAt',
+        // 変更
         'fields.category': 'blog',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogPost',
+          content_type: 'blogpost',
           limit,
           skip,
           order: '-sys.createdAt',
@@ -151,12 +152,13 @@ export default {
       const categories = await client.getEntries({
         content_type: 'category',
         order: 'sys.createdAt',
+        // 変更
         'fields.category': 'blog',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogPost',
+          content_type: 'blogpost',
           limit,
           skip,
           order: '-sys.createdAt',
