@@ -1,36 +1,51 @@
 <template>
   <div class="container">
     <div>
-      <logo />
       <h1 class="title">
-        ya_matsuura
+        sample-nuxt-firebase-contentful
       </h1>
       <h2 class="subtitle">
-        My pioneering Nuxt.js project
+        This is a sample of Nuxt.js, Firebase hosting and Contentful
       </h2>
       <div class="links">
-        <a href="https://nuxtjs.org/" target="_blank" class="button--green">
-          Documentation
-        </a>
-        <a
-          href="https://github.com/nuxt/nuxt.js"
-          target="_blank"
-          class="button--grey"
-        >
-          GitHub
-        </a>
+        <ul>
+          <li
+            v-for="(article, index) in articles"
+            :key="index"
+          >
+            <nuxt-link
+              :to="`/articles/${article.fields.slug}`"
+            >
+              {{ article.fields.title }}
+            </nuxt-link>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+import { mapGetters } from 'vuex'
 
 export default {
-  components: {
-    Logo
-  }
+  async fetch ({ store, query }) {
+    try {
+      /**
+       * MEMO: query paramを使ってpaginateが可能
+       * e.g. http://localhost:3000/?page=10, http://localhost:3000/?page=100 などでアクセス
+       */
+      const page = query.page ? query.page : 1
+      await store.dispatch('article/fetchArticles', { page, limit: 10, category: 'blog' })
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  computed: {
+    ...mapGetters({
+      articles: 'article/articles',
+    }),
+  },
 }
 </script>
 
