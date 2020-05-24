@@ -55,7 +55,7 @@ export const actions = {
       const skip = (page - 1) * limit
       const client = contentful.createClient(config)
       const articleParams = {
-        content_type: 'blogpost',
+        content_type: 'workPost',
         limit,
         skip,
         order: '-sys.createdAt',
@@ -83,7 +83,7 @@ export const actions = {
     try {
       const client = contentful.createClient(config)
       const posts = await client.getEntries({
-        content_type: 'blogpost',
+        content_type: 'workPost',
         'fields.slug': slug,
       })
       if (posts.items.length > 0) {

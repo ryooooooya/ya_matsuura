@@ -1,0 +1,152 @@
+
+// layout
+$content-width:1024px;
+
+/* グリッド */
+$col-wid:64px;
+$gutter-wid:32px;
+$colwrap-wid: $col-wid * 12 + $gutter-wid * 12;
+$col-md-wid: $col-wid / $colwrap-wid * 100;
+$gutter-md-wid: $gutter-wid / $colwrap-wid * 100;
+$gutter-sp-wrap: 20px;
+
+// カラー
+$black: #333333;
+$gray: #aaaaaa;
+
+/* ブレイクポイントの設定 min~max */
+$mq-breakpoints-min: (
+  'xs': '0px',
+  'sm': '481px',
+  'md': '769px',
+  'lg': $colwrap-wid + 1px,
+) !default;
+
+$mq-breakpoints-max: (
+  'xs': '480px',
+  'sm': '768px',
+  'md': $colwrap-wid,
+  'lg': '99999px',
+) !default;
+
+// そのメディアクエリのみ適応
+@mixin mq-target($breakpoint: md) {
+  @media screen and (min-width: #{map-get($mq-breakpoints-min, $breakpoint)}) and (max-width: #{map-get($mq-breakpoints-max, $breakpoint)}) {
+    @content;
+  }
+}
+
+// それより小さい画面に適応
+@mixin mq($breakpoint: md) {
+  @media screen and (max-width: #{map-get($mq-breakpoints-max, $breakpoint)}) {
+    @content;
+  }
+}
+
+/* アニメーション */
+$anim: all 500ms 0s cubic-bezier(0.19, 1, 0.22, 1);
+$anim-quick: all 150ms 0s cubic-bezier(0.19, 1, 0.22, 1);
+
+/* テキストの揃え */
+.center{
+  text-align: center;
+}
+.left{
+  text-align: left;
+}
+.right{
+  text-align: right;
+}
+
+/* メディアクエリごとの要素の消去（ex:hidden-smをつけるとsm以下で消える） */
+.hidden-lg{
+  @include mq-target(lg){
+    display: none;
+  }
+}
+.hidden-md{
+  @include mq-target(md){
+    display: none;
+  }
+}
+.hidden-sm{
+  @include mq-target(sm){
+    display: none;
+  }
+}
+.hidden-xs{
+  @include mq-target(xs){
+    display: none;
+  }
+}
+
+/* マージンリセット */
+.margin-reset{
+  margin: 0;
+}
+
+/* flexboxの揃え（.col-wrapの要素に付与する） */
+.wrap-left{
+  justify-content: flex-start;
+}
+.wrap-right{
+  justify-content: flex-end;
+}
+.wrap-center{
+  justify-content: center;
+}
+.wrap-top{
+  align-items: flex-start;
+}
+.wrap-bottom{
+  align-items: flex-end;
+}
+.wrap-middle{
+  align-items: center;
+}
+
+/* flexboxの揃え（.colの要素に付与する） */
+.col-top{
+  align-self: flex-start;
+}
+.col-bottom{
+  align-self: flex-end;
+}
+.col-middle{
+  align-self: center;
+}
+
+// 文字
+.bold{
+  font-weight: 600;
+}
+.italic{
+  font-style: italic;
+}
+
+// fig
+@mixin gridfig($top:0, $bottom:0) {
+  position: relative;
+  &::before{
+    content: "";
+    position: absolute;
+    top: $top;
+    left: calc((100% - 100vw)/2);
+    background: #000;
+    width: 100vw;
+    height: 1px;
+    z-index: -1;
+    opacity: 0.05;
+  }
+  &::after{
+    content: "";
+    position: absolute;
+    bottom: $bottom;
+    left: calc((100% - 100vw)/2);
+    background: #000;
+    width: 100vw;
+    height: 1px;
+    z-index: -1;
+    opacity: 0.05;
+  }
+}

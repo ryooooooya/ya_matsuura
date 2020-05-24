@@ -57,6 +57,7 @@ export default {
     ['@nuxtjs/google-analytics', {
       id: process.env.GOOGLE_ANALYTICS || '',
     }],
+    '@nuxtjs/style-resources',
   ],
   /*
    ** Nuxt.js modules
@@ -65,6 +66,16 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
+
+  css: [
+    { src: '~/assets/scss/app.scss', lang: 'scss' },
+  ],
+
+  styleResources: {
+    scss: [
+      '~/assets/scss/components/common/_variables.scss',
+    ],
+  },
 
   /*
    ** Build configuration
@@ -108,12 +119,12 @@ export default {
         content_type: 'category',
         order: 'sys.createdAt',
         // 変更
-        'fields.category': 'blog',
+        'fields.category': 'work',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogpost',
+          content_type: 'workPost',
           limit,
           skip,
           order: '-sys.createdAt',
@@ -153,12 +164,12 @@ export default {
         content_type: 'category',
         order: 'sys.createdAt',
         // 変更
-        'fields.category': 'blog',
+        'fields.category': 'work',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogpost',
+          content_type: 'workPost',
           limit,
           skip,
           order: '-sys.createdAt',

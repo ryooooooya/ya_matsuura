@@ -1,0 +1,36 @@
+@import "./normalize.scss";
+@import "./variables.scss";
+
+// reset
+*{
+  box-sizing: border-box;
+}
+*{
+  font-family: 'Noto Sans JP', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans CJK JP", "Original Yu Gothic", "Yu Gothic", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Sans Emoji";
+  // font-feature-settings: "palt";
+  // font-kerning: auto;
+}
+html{
+  overflow-x: hidden;
+}
+body{
+  background: #FAFAFA;
+}
+h1,h2,h3,h4{
+  font-weight: 400;
+}
+h1,h2,h3,h4,p,figure,ul,li,dl,dd,dt{
+  margin: 0;
+}
+ul{
+  padding: 0;
+}
+li{
+  list-style: none;
+}
+a{
+  text-decoration: none;
+}
+img{
+  max-width: 100%;
+}

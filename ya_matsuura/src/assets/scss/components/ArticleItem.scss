@@ -1,0 +1,50 @@
+@import "./common/_grid.scss";
+
+.articleItem{
+  display: flex;
+  align-items: center;
+  &_image{
+    width: 200px;
+    img{
+      width: 200px;
+      height: 150px;
+      object-fit: cover;
+    }
+  }
+  &_information{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-left: 32px;
+  }
+  &_title{
+    width: 100%;
+    font-size: 1rem;
+    color:$black;
+    letter-spacing: 0.1em;
+  }
+  &_summary{
+    width: 100%;
+    margin-top: 16px;
+    font-size: 0.8rem;
+    color: $black;
+    letter-spacing: 0.05em;
+    line-height: 1.7;
+  }
+  &_time{
+    color: $gray;
+    font-size: 0.8rem;
+  }
+  &_category{
+    a{
+      color: $gray;
+      font-size: 0.8rem;
+    }
+  }
+  &_tag{
+    a{
+      color: $gray;
+      font-size: 0.8rem;
+    }
+  }
+}
