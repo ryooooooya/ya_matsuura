@@ -1,0 +1,64 @@
+@import "./variables.scss";
+
+/* Grid */
+.guide-wrap{
+  position: fixed;
+  top: 0;
+  height: 100%;
+  padding: 0;
+  z-index: 99999;
+  > .guide{
+    height: 100%;
+    @include mq(){
+      &::before{
+        content: "";
+        width: $gutter-sp-wrap;
+        background: rgba(0, 255, 242, 0.1);
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      &::after{
+        content: "";
+        width: $gutter-sp-wrap;
+        background: rgba(0, 255, 242, 0.1);
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+    > .col{
+      position: relative;
+      border-left: 1px solid rgb(213, 0, 249);
+      &::before{
+        content: "";
+        width: $gutter-wid / 2;
+        background: rgba(213, 0, 249, 0.2);
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        @include mq(){
+          width: 12.5%;
+        }
+      }
+      &::after{
+        content: "";
+        width: $gutter-wid / 2;
+        background: rgba(213, 0, 249, 0.2);
+        height: 100%;
+        position: absolute;
+        top: 0;
+        right: 0;
+        @include mq(){
+          width: 12.5%;
+        }
+      }
+      &:last-child{
+        border-right: 1px solid rgb(213, 0, 249);
+      }
+    }
+  }
+}

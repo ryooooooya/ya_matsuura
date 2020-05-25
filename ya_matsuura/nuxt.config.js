@@ -57,6 +57,7 @@ export default {
     ['@nuxtjs/google-analytics', {
       id: process.env.GOOGLE_ANALYTICS || '',
     }],
+    '@nuxtjs/style-resources',
   ],
   /*
    ** Nuxt.js modules
@@ -65,6 +66,16 @@ export default {
     // Doc: https://github.com/nuxt-community/dotenv-module
     '@nuxtjs/dotenv',
   ],
+
+  css: [
+    { src: '~/assets/scss/app.scss', lang: 'scss' },
+  ],
+
+  styleResources: {
+    scss: [
+      '~/assets/scss/components/common/_variables.scss',
+    ],
+  },
 
   /*
    ** Build configuration
@@ -107,12 +118,13 @@ export default {
       const categories = await client.getEntries({
         content_type: 'category',
         order: 'sys.createdAt',
-        'fields.category': 'blog',
+        // 変更
+        'fields.category': 'work',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogPost',
+          content_type: 'workPost',
           limit,
           skip,
           order: '-sys.createdAt',
@@ -151,12 +163,13 @@ export default {
       const categories = await client.getEntries({
         content_type: 'category',
         order: 'sys.createdAt',
-        'fields.category': 'blog',
+        // 変更
+        'fields.category': 'work',
       })
       const categoriesSysId = categories.items[0].sys.id
       while (hasNextPage) {
         const articleParams = {
-          content_type: 'blogPost',
+          content_type: 'workPost',
           limit,
           skip,
           order: '-sys.createdAt',
