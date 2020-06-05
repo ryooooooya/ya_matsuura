@@ -37,8 +37,8 @@
       <article
         v-for="(article, index) in articles"
         :key="index"
-        class="work-item"
         :id="`#${article.fields.slug}`"
+        class="work-item"
       >
         <div class="image">
           <div class="cover-image">
@@ -53,10 +53,12 @@
               :key="image.fields.file.url"
               class="item"
             >
-              <img
-                :src="`${ image.fields.file.url }`"
-                alt=""
-              >
+              <div class="image-wrap">
+                <img
+                  :src="`${ image.fields.file.url }?fm=webp&w=256`"
+                  alt=""
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -207,18 +209,48 @@ export default {
         > .image-list{
           display: flex;
           flex-wrap: wrap;
+          // flex-direction: row-reverse;
           width: 512px;
           height: 288px;
           background: #f0f0f0;
           > .item{
+            position: relative;
             width: 50%;
             height: 50%;
             background: #f0f0f0;
             border: 1px solid #ffffff;
-            > img{
+            > .image-wrap{
               width: 100%;
               height: 100%;
-              object-fit: cover;
+              > img{
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
+            &:nth-child(1){
+              z-index: 5000;
+            }
+            &:nth-child(2){
+              z-index: 5000;
+            }
+            &:nth-child(3){
+              z-index: 5000;
+            }
+            &:nth-child(4){
+              z-index: 5000;
+            }
+            &:nth-child(4n+5){
+              margin-top: -288px;
+            }
+            &:nth-child(4n+6){
+              margin-top: -288px;
+            }
+            &:nth-child(4n+7){
+              margin-top: -144px;
+            }
+            &:nth-child(4n+8){
+              margin-top: -144px;
             }
           }
         }
