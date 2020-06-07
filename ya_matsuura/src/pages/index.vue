@@ -47,19 +47,18 @@
             alt=""
           >
           </div>
-          <div class="image-list">
-            <div
+          <div class="slider-list">
+            <!-- <figure class="slide" /> -->
+            <figure
               v-for="image in article.fields.subImage"
               :key="image.fields.file.url"
-              class="item"
+              class="slide"
             >
-              <div class="image-wrap">
-                <img
-                  :src="`${ image.fields.file.url }?fm=webp&w=256`"
-                  alt=""
-                >
-              </div>
-            </div>
+              <img
+                :src="`${ image.fields.file.url }?fm=webp&w=256`"
+                alt=""
+              >
+            </figure>
           </div>
         </div>
         <div class="information">
@@ -81,6 +80,10 @@
             <dd class="description">
               {{ article.fields.note }}
             </dd>
+          </div>
+          <div class="controller">
+            <button class="prev" @click="prev" disabled="true">＜</button>
+            <button class="next" @click="next">＞</button>
           </div>
         </div>
       </article>
@@ -111,6 +114,189 @@ export default {
     ...mapGetters({
       articles: 'article/articles',
     }),
+  },
+  mounted(){
+    this.zindex()
+  },
+  methods: {
+    zindex() {
+      const slide = document.getElementsByClassName('slide')
+      let zindex = 0
+      for (let num = 0; num < slide.length; num++) {
+        zindex = slide.length - num
+        slide[num].setAttribute("style", "z-index:" + zindex)
+      }
+    },
+    // 次へ
+    next() {
+      const controller = document.getElementsByClassName('controller')
+      const buttonNext = document.getElementsByClassName('next')
+      const buttonPrev = document.getElementsByClassName('prev')
+
+      // -viewedあり
+      if(document.getElementsByClassName('-viewed').length) {
+        const viewedEle = document.getElementsByClassName('-viewed')
+
+        let slide = document.getElementsByTagName("figure")
+        slide = [].slice.call( slide )
+        const index = slide.indexOf( viewedEle[0] )
+
+        const slideAll = document.getElementsByTagName("figure")
+
+        for (let i = 0; i < 4; i++) {
+          const viewedDeleteEle = slideAll[index + i]
+          const viewedNextEle = slideAll[index + i + 4]
+          viewedDeleteEle.classList.remove("-viewed")
+          viewedNextEle.classList.add("-viewed")
+        }
+
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          for (let i = 0; i < 4; i++) {
+            const viewedNextEle = slideAll[index + i + 4]
+            viewedNextEle.setAttribute("style", "z-index:0")
+          }
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+
+          buttonPrev[0].removeAttribute("disabled")
+
+          const indexEnd = slide.indexOf( viewedEle[3] )
+          if(indexEnd === slide.length - 5) {
+            buttonNext[0].setAttribute("disabled", true)
+          }
+        }, 1000)
+      }
+      // 最初
+      else if(document.getElementsByClassName('-viewed').length === 0 &&
+      document.getElementsByClassName('-back').length === 0) {
+        const slideFst = document.getElementsByClassName('slide')
+        for (let i = 0; i < 4; i++) {
+          slideFst[i].classList.add("-viewed")
+        }
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          for (let i = 0; i < 4; i++) {
+            slideFst[i].setAttribute("style", "z-index:0")
+          }
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+          buttonPrev[0].removeAttribute("disabled")
+        }, 1000)
+      }
+      // -viewedなし
+      else {
+        const backedEle = document.getElementsByClassName('-back')
+
+        let slide = document.getElementsByTagName("figure")
+        slide = [].slice.call( slide )
+        const index = slide.indexOf( backedEle[0] )
+
+        const slideAll = document.getElementsByTagName("figure")
+
+        for (let i = 0; i < 4; i++) {
+          const viewedReplaceEle = slideAll[index + i]
+          viewedReplaceEle.classList.replace("-back", "-viewed")
+        }
+
+        // backedEle[0].classList.replace("-back", "-viewed")
+
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          const viewedEle = document.getElementsByClassName('-viewed')
+          for (let i = 0; i < 4; i++) {
+            viewedEle[i].setAttribute("style", "z-index:0")
+          }
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+
+          buttonPrev[0].removeAttribute("disabled")
+
+          const indexEnd = slide.indexOf( viewedEle[3] )
+          if(indexEnd === slide.length - 5) {
+            buttonNext[0].setAttribute("disabled", true)
+          }
+        }, 1000)
+      }
+    },
+    // 前へ
+    prev() {
+      const controller = document.getElementsByClassName('controller')
+      const buttonNext = document.getElementsByClassName('next')
+      const buttonPrev = document.getElementsByClassName('prev')
+
+      // -viewedあり : 戻り始め
+      if(document.getElementsByClassName('-viewed').length) {
+        const viewedEle = document.getElementsByClassName('-viewed')
+
+        let slide = document.getElementsByTagName("figure")
+        slide = [].slice.call( slide )
+        const index = slide.indexOf( viewedEle[0] )
+
+        const slideAll = document.getElementsByTagName("figure")
+
+        for (let i = 0; i < 4; i++) {
+          const indexNum = slide.length - index - i
+
+          const viewedReplaceEle = slideAll[index + i]
+
+          viewedReplaceEle.setAttribute("style", "z-index:" + indexNum)
+          viewedReplaceEle.classList.replace("-viewed", "-back")
+        }
+
+        buttonNext[0].removeAttribute("disabled")
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          const backEle = document.getElementsByClassName('-back')
+          const index = slide.indexOf( backEle[0] )
+
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+
+          if(index === 0) {
+            buttonPrev[0].setAttribute("disabled", true)
+          }
+        }, 1000)
+      }
+      // -viewedなし : 連続戻り
+      else {
+        const backedEle = document.getElementsByClassName('-back')
+
+        let slide = document.getElementsByTagName("figure")
+        slide = [].slice.call( slide )
+        const index = slide.indexOf( backedEle[0] )
+
+        const slideAll = document.getElementsByTagName("figure")
+
+        for (let i = 0; i < 4; i++) {
+          const backDeleteEle = slideAll[index + i]
+          const backNextEle = slideAll[index + i - 4]
+          backDeleteEle.classList.remove("-back")
+          backNextEle.classList.add("-back")
+
+          const indexNum = slide.length - index + 4 - i
+          backNextEle.setAttribute("style", "z-index:" + indexNum)
+        }
+
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          const backEle = document.getElementsByClassName('-back')
+          const index = slide.indexOf( backEle[0] )
+
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+
+          if(index === 0) {
+            buttonPrev[0].setAttribute("disabled", true)
+          }
+        }, 1000)
+      }
+    },
   },
 }
 </script>
@@ -206,39 +392,22 @@ export default {
             object-fit: cover;
           }
         }
-        > .image-list{
+        > .slider-list{
+          position: relative;
           display: flex;
           flex-wrap: wrap;
-          // flex-direction: row-reverse;
           width: 512px;
           height: 288px;
           background: #f0f0f0;
-          > .item{
-            position: relative;
+          > .slide{
             width: 50%;
             height: 50%;
             background: #f0f0f0;
             border: 1px solid #ffffff;
-            > .image-wrap{
+            > img{
               width: 100%;
               height: 100%;
-              > img{
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-              }
-            }
-            &:nth-child(1){
-              z-index: 5000;
-            }
-            &:nth-child(2){
-              z-index: 5000;
-            }
-            &:nth-child(3){
-              z-index: 5000;
-            }
-            &:nth-child(4){
-              z-index: 5000;
+              object-fit: cover;
             }
             &:nth-child(4n+5){
               margin-top: -288px;
@@ -252,10 +421,18 @@ export default {
             &:nth-child(4n+8){
               margin-top: -144px;
             }
+            // js
+            &.-viewed{
+              animation: 900ms ease 0s 1 normal both running viewed;
+            }
+            &.-back{
+              animation: 900ms ease 0s 1 normal both running back;
+            }
           }
         }
       }
       > .information{
+        position: relative;
         > .title{
           margin-top: 18px;
           font-size: 0.925rem;
@@ -280,7 +457,39 @@ export default {
             line-height: 1.5;
           }
         }
+        > .controller{
+          position: absolute;
+          bottom: 30px;
+          left: 50%;
+          display: flex;
+          transform: translate(-50%, 0);
+          &.-disable{
+            pointer-events: none;
+          }
+          > .prev{
+            cursor: pointer;
+          }
+          > .next{
+            cursor: pointer;
+          }
+        }
       }
+    }
+  }
+  @keyframes viewed {
+    0% {
+      clip-path: inset(0 0 0 0);
+    }
+    100% {
+      clip-path: inset(0 100% 0 0);
+    }
+  }
+  @keyframes back {
+    0% {
+      clip-path: inset(0 100% 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
     }
   }
 }

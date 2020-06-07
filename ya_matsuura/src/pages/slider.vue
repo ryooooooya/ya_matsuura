@@ -1,7 +1,6 @@
 <template>
   <main class="main">
     <div class="slider-list">
-      <figure claSS="slide" />
       <figure claSS="slide">
         <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/111167/img5.jpeg" alt="Sky">
       </figure>
@@ -30,7 +29,7 @@
 export default {
   mounted(){
     this.zindex()
-    this.addViewFirst()
+    // this.addViewFirst()
   },
   methods: {
     zindex() {
@@ -80,6 +79,22 @@ export default {
           if(index === slide.length - 1) {
             buttonNext[0].setAttribute("disabled", true)
           }
+        }, 1000)
+      }
+      // 最初
+      else if(document.getElementsByClassName('-viewed').length === 0 &&
+      document.getElementsByClassName('-back').length === 0) {
+        const slideFst = document.getElementsByClassName('slide')
+        slideFst[0].classList.add("-viewed")
+
+        controller[0].classList.add("-disable")
+
+        setTimeout(function(){
+          slideFst[0].setAttribute("style", "z-index:0")
+
+          const disableEle = document.getElementsByClassName('-disable')
+          disableEle[0].classList.remove("-disable")
+          buttonPrev[0].removeAttribute("disabled")
         }, 1000)
       }
       // -viewedなし
